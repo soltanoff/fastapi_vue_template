@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter
 
 import models
@@ -9,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.get('/article')
+@router.get('/article', response_model=List[models.Article])
 async def get_articles():
     return {
         'pages_info': {'length': 0},
@@ -21,7 +23,7 @@ async def get_articles():
     }
 
 
-@router.get('/article/{item_id}')
+@router.get('/article/{item_id}', response_model=models.Article)
 async def get_article_by_id(item_id: int):
     return {
         'id': 1,
@@ -31,12 +33,12 @@ async def get_article_by_id(item_id: int):
 
 
 @router.post('/article')
-async def create_article(article: models.Article):
+async def create_article(article: models.ArticleIn):
     return {}
 
 
 @router.put('/article/{item_id}')
-async def update_article_by_id(item_id: int):
+async def update_article_by_id(item_id: int, article: models.ArticleIn):
     return {}
 
 
