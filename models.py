@@ -20,5 +20,5 @@ class PaginationInfo(BaseModel):
 
 
 class PaginatedArticles(BaseModel):
-    pages_info = List[PaginationInfo]
-    articles = List[Article]
+    pages_info: List[PaginationInfo]
+    articles: List[Article]
