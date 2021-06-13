@@ -1,13 +1,18 @@
+import databases
 import sqlalchemy
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-metadata = Base.metadata
+import settings
 
+metadata = sqlalchemy.MetaData()
 
-class ArticlesTable(Base):
-    __tablename__ = 'Articles'
+ArticlesTable = sqlalchemy.Table(
+    'Articles',
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("title", sqlalchemy.String),
+    sqlalchemy.Column("content", sqlalchemy.Text)
+)
 
-    id = sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True)
-    title = sqlalchemy.Column("title", sqlalchemy.String)
-    content = sqlalchemy.Column("content", sqlalchemy.Text)
+database = databases.Database(settings.DATABASE_URL)
+engine = sqlalchemy.create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
+metadata.create_all(engine)
