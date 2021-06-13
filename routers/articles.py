@@ -2,6 +2,7 @@ import math
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
+from sqlalchemy import func, select
 from starlette import status
 
 import models
@@ -19,14 +20,14 @@ router = APIRouter(
 async def get_articles(page: Optional[int] = 1):
     query = ArticlesTable.select()
     articles = await database.fetch_all(query.limit(settings.PAGE_SIZE).offset((page - 1) * settings.PAGE_SIZE))
-    total_articles_count = await database.execute(query.order_by(None).count())
+    total_articles_count = await database.fetch_val(select([func.count()]).select_from(ArticlesTable))
     return models.PaginatedArticles(
         pages_info=[
             {
                 'number': number,
-                'link': f'/article/?page={number}'
+                'link': f'{router.prefix}/article/?page={number}'
             }
-            for number in range(int(math.ceil(total_articles_count / float(settings.PAGE_SIZE))))
+            for number in range(1, int(math.ceil(total_articles_count / float(settings.PAGE_SIZE))) + 1)
         ],
         articles=articles
     )
