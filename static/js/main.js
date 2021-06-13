@@ -5,7 +5,7 @@ new Vue({
         loading: false,
         preview: false,
 
-        page: '/api/article/',
+        page: '/api/article/?page=1',
         pages_info: null,
 
         articles: [],
