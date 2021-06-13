@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.get('/article')  # , response_model=List[models.Article])
+@router.get('/article/')  # , response_model=List[models.Article])
 async def get_articles():
     query = ArticlesTable.select()
     articles = await database.fetch_all(query)
@@ -21,19 +21,19 @@ async def get_articles():
     }
 
 
-@router.get('/article/{item_id}', response_model=models.Article)
+@router.get('/article/{item_id}/', response_model=models.Article)
 async def get_article_by_id(item_id: int):
     query = ArticlesTable.select()
     return await database.fetch_one(query.where(ArticlesTable.columns.id == item_id))
 
 
-@router.post('/article')
+@router.post('/article/')
 async def create_article(article: models.ArticleIn):
     query = ArticlesTable.insert().values(title=article.title, content=article.content)
     await database.execute(query)
 
 
-@router.put('/article/{item_id}', response_model=models.Article)
+@router.put('/article/{item_id}/', response_model=models.Article)
 async def update_article_by_id(item_id: int, article: models.ArticleIn):
     query = ArticlesTable.update().values(title=article.title, content=article.content)
     resultSuccess = await database.execute(query.where(ArticlesTable.columns.id == item_id))
@@ -42,7 +42,7 @@ async def update_article_by_id(item_id: int, article: models.ArticleIn):
     raise HTTPException(status_code=status.HTTP_418_IM_A_TEAPOT, detail="The article could not be saved")
 
 
-@router.delete('/article/{item_id}')
+@router.delete('/article/{item_id}/')
 async def delete_article_by_id(item_id: int):
     query = ArticlesTable.delete()
     await database.execute(query.where(id=item_id))
