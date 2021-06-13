@@ -1,3 +1,5 @@
+PAGE_SIZE = 5
+
 STATIC_URL = '/static/'
 STATIC_DIRECTORY = 'static'
 
