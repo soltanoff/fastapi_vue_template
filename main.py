@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 import settings
-from routers import index, articles
+from api import index, articles
 from tables import database
 
 app = FastAPI(
